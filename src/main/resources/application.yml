@@ -1,0 +1,6 @@
+server:
+  port: 8080
+
+pdfnet:
+  license:
+    key: ${pdfnet-license-key:}

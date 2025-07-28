@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Manipulator Demo</title>
+    <style>body{font-family:sans-serif}input[type=file]{margin-bottom:8px}</style>
+</head>
+<body>
+<h1>PDF Manipulator Demo</h1>
+<section>
+    <h2>Split</h2>
+    <form action="/split" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <label>From <input name="from" type="number" min="1" value="1"></label>
+        <label>To <input name="to" type="number" min="1" value="2"></label>
+        <button>Split</button>
+    </form>
+</section>
+<section>
+    <h2>Merge</h2>
+    <form action="/merge" method="post" enctype="multipart/form-data">
+        <input type="file" name="file1" required>
+        <input type="file" name="file2" required>
+        <button>Merge</button>
+    </form>
+</section>
+<section>
+    <h2>Reorder</h2>
+    <form action="/reorder" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <label>Order (e.g. 3,1,2): <input name="order" required></label>
+        <button>Reorder</button>
+    </form>
+</section>
+<section>
+    <h2>Rotate</h2>
+    <form action="/rotate" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <label>Pages (e.g. 1,2): <input name="pages" required></label>
+        <label>Degrees: <input name="degrees" type="number" min="0" step="90" max="270" value="90" required></label>
+        <button>Rotate</button>
+    </form>
+</section>
+<section>
+    <h2>Remove</h2>
+    <form action="/remove" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <label>Pages to remove (e.g. 2,5): <input name="pages" required></label>
+        <button>Remove</button>
+    </form>
+</section>
+<section>
+    <h2>Add</h2>
+    <form action="/add" method="post" enctype="multipart/form-data">
+        <label>Base PDF <input type="file" name="file"></label><br/>
+        <label>Blank pages to add <input type="number" name="blanks"></label><br/>
+        <label>Append PDFs <input type="file" name="append" multiple></label><br/>
+        <button>Add</button>
+    </form>
+</section>
+<hr>
+<h2>Conversion: Image to PDF</h2>
+<form action="/convert/image-to-pdf" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept="image/*" required>
+    <button>Convert Image</button>
+</form>
+
+<h2>Conversion: Office to PDF (doc,xls,ppt,odt...)</h2>
+<form action="/convert/office-to-pdf" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.odt,.ods,.odp,.rtf,.txt,.csv" required>
+    <button>Convert Office</button>
+</form>
+
+<h2>Conversion: AutoCAD to PDF</h2>
+<form action="/convert/cad-to-pdf" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".dwg,.dxf" required>
+    <button>Convert AutoCAD</button>
+</form>
+<p>After submitting, the processed PDF will auto-download.</p>
+</body>
+</html>

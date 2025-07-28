@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  doc-transformer:
+    build: .
+    ports:
+      - "8080:8080"   # Application port
+      - "5005:5005"   # Debug port
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - pdfnet-license-key=${PDFNET_LICENSE_KEY:-demo:vinayaka.prabhu@procore.com:7e7ab6080200000000fe238b78d71b7d2aff89cbd25830ac36adac261c}
+    volumes:
+      - /tmp:/tmp  # Mount temp directory for file operations
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s 
