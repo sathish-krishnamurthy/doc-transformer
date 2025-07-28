@@ -19,16 +19,16 @@ Document transformation and manipulation service supporting PDF, Office, and CAD
 ### Using Docker Compose (Recommended)
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd doc-transformer
    ```
-
 2. **Start the application**
+
    ```bash
    docker-compose up --build
    ```
-
 3. **Access the application**
    - Application: http://localhost:8080
    - Debug port: localhost:5005 (for IDE debugging)
@@ -45,6 +45,7 @@ The application uses the Apryse (PDFTron) SDK which requires a license key. The 
 3. **Docker Compose**: Create a `.env` file (see `.env.example`)
 
 **Example `.env` file:**
+
 ```bash
 PDFNET_LICENSE_KEY=your-license-key-here
 ```
@@ -54,7 +55,7 @@ PDFNET_LICENSE_KEY=your-license-key-here
 #### Document Conversion
 
 - `POST /convert/image-to-pdf` - Convert image files to PDF
-- `POST /convert/office-to-pdf` - Convert Office documents (Word, Excel, PowerPoint) to PDF  
+- `POST /convert/office-to-pdf` - Convert Office documents (Word, Excel, PowerPoint) to PDF
 - `POST /convert/cad-to-pdf` - Convert CAD files to PDF
 
 #### PDF Manipulation
@@ -76,18 +77,19 @@ PDFNET_LICENSE_KEY=your-license-key-here
 #### Local Development
 
 1. **Prerequisites**
+
    ```bash
    # Install Java 17+
    # Install Maven 3.6+
    # Install LibreOffice (for office conversions)
    ```
-
 2. **Run locally**
+
    ```bash
    mvn spring-boot:run
    ```
-
 3. **Build JAR**
+
    ```bash
    mvn clean package
    java -jar target/doc-transformer-0.0.1-SNAPSHOT.jar
@@ -166,11 +168,9 @@ curl -X POST -F "file=@document.pdf" -F "blanks=2" http://localhost:8080/add --o
 1. **License Key Issues**
    - Ensure your Apryse license key is valid and properly configured
    - Check the application logs for license-related errors
-
 2. **LibreOffice Conversion Failures**
    - Verify LibreOffice is installed in the container
    - Check file format is supported by LibreOffice
-
 3. **Memory Issues**
    - Increase Docker memory limits for large file processing
    - Monitor container resource usage

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0          http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>3.5.3</version>
     <relativePath/>
   </parent>
-  
+
   <groupId>com.procore</groupId>
   <artifactId>doc-transformer</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>doc-transformer</name>
   <description>Document transformation and manipulation (PDF, Office, CAD)</description>
-  
+
   <properties>
     <java.version>17</java.version>
     <maven.compiler.source>17</maven.compiler.source>
@@ -22,7 +22,7 @@
     <spotless.version>2.45.0</spotless.version>
     <google.java.format.version>1.24.0</google.java.format.version>
   </properties>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.pdftron</groupId>
       <artifactId>PDFNet</artifactId>
-      <version>11.5.0</version>
+      <version>11.6.0</version>
     </dependency>
   </dependencies>
 

@@ -1,9 +1,9 @@
 package com.procore.doctransform.service;
 
+import com.pdftron.pdf.Convert;
+import com.pdftron.pdf.ConvertPrinter;
 import com.pdftron.pdf.PDFDoc;
-import com.pdftron.pdf.PDFNet;
 import com.pdftron.sdf.SDFDoc;
-import jakarta.annotation.PostConstruct;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.imageio.ImageIO;
@@ -12,24 +12,11 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ConvertService {
-
-  @Value("${pdfnet.license.key}")
-  private String pdfnetLicenseKey;
-
-  @PostConstruct
-  public void initApryse() {
-    try {
-      PDFNet.initialize(pdfnetLicenseKey);
-    } catch (Exception e) {
-      throw new RuntimeException("Failed to initialize Apryse: " + e.getMessage(), e);
-    }
-  }
 
   public File imageToPdf(MultipartFile file) throws IOException {
     BufferedImage img = ImageIO.read(file.getInputStream());
@@ -83,10 +70,8 @@ public class ConvertService {
     PDFDoc pdfDoc = null;
     try {
       pdfDoc = new PDFDoc();
-      // This is the Apryse (PDFTron) CAD conversion call:
-     
-      // CADModule.convertToPdf(pdfDoc, input.getAbsolutePath());
-
+      ConvertPrinter.setMode(ConvertPrinter.e_convert_printer_prefer_builtin_converter);
+      Convert.toPdf(pdfDoc, input.getAbsolutePath());
       File out = File.createTempFile("cad2pdf-", ".pdf");
       pdfDoc.save(out.getAbsolutePath(), SDFDoc.SaveMode.LINEARIZED, null);
       pdfDoc.close();

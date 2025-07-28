@@ -2,8 +2,15 @@ FROM openjdk:17-jdk-slim
 
 # Install LibreOffice (for office conversion), Maven, and wget for healthcheck
 RUN apt-get update && \
-    apt-get install -y libreoffice maven wget && \
+    apt-get install -y libreoffice maven wget tar && \
     rm -rf /var/lib/apt/lists/*
+
+# Create Apryse SDK directory and download CAD Module
+RUN mkdir -p /opt/apryse-sdk && \
+    cd /opt/apryse-sdk && \
+    wget https://www.pdftron.com/downloads/CADModuleLinux.tar.gz && \
+    tar -xzf CADModuleLinux.tar.gz && \
+    rm CADModuleLinux.tar.gz
 
 WORKDIR /app
 

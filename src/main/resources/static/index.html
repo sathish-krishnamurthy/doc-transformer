@@ -1,80 +1,178 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>PDF Manipulator Demo</title>
-    <style>body{font-family:sans-serif}input[type=file]{margin-bottom:8px}</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DocTransformer - PDF Manipulation & Conversion Demo</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .tabs { display: flex; background: #333; }
+        .tab {
+            padding: 14px 16px;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+            flex: 1;
+            text-align: center;
+            border-bottom: 3px solid transparent;
+        }
+        .tab.active { border-bottom: 5px solid #FF5200; background: #444; }
+        .content { padding: 20px; }
+        section { display: none; }
+        section.active { display: block; }
+        form > * { margin: 5px 0; display: block; }
+        label { font-weight: bold; }
+        input[type=file] { width: 100%; }
+        button { padding: 8px 16px; margin-top: 10px; cursor: pointer; }
+    </style>
 </head>
 <body>
-<h1>PDF Manipulator Demo</h1>
-<section>
-    <h2>Split</h2>
-    <form action="/split" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <label>From <input name="from" type="number" min="1" value="1"></label>
-        <label>To <input name="to" type="number" min="1" value="2"></label>
-        <button>Split</button>
-    </form>
-</section>
-<section>
-    <h2>Merge</h2>
-    <form action="/merge" method="post" enctype="multipart/form-data">
-        <input type="file" name="file1" required>
-        <input type="file" name="file2" required>
-        <button>Merge</button>
-    </form>
-</section>
-<section>
-    <h2>Reorder</h2>
-    <form action="/reorder" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <label>Order (e.g. 3,1,2): <input name="order" required></label>
-        <button>Reorder</button>
-    </form>
-</section>
-<section>
-    <h2>Rotate</h2>
-    <form action="/rotate" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <label>Pages (e.g. 1,2): <input name="pages" required></label>
-        <label>Degrees: <input name="degrees" type="number" min="0" step="90" max="270" value="90" required></label>
-        <button>Rotate</button>
-    </form>
-</section>
-<section>
-    <h2>Remove</h2>
-    <form action="/remove" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <label>Pages to remove (e.g. 2,5): <input name="pages" required></label>
-        <button>Remove</button>
-    </form>
-</section>
-<section>
-    <h2>Add</h2>
-    <form action="/add" method="post" enctype="multipart/form-data">
-        <label>Base PDF <input type="file" name="file"></label><br/>
-        <label>Blank pages to add <input type="number" name="blanks"></label><br/>
-        <label>Append PDFs <input type="file" name="append" multiple></label><br/>
-        <button>Add</button>
-    </form>
-</section>
-<hr>
-<h2>Conversion: Image to PDF</h2>
-<form action="/convert/image-to-pdf" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" accept="image/*" required>
-    <button>Convert Image</button>
-</form>
 
-<h2>Conversion: Office to PDF (doc,xls,ppt,odt...)</h2>
-<form action="/convert/office-to-pdf" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.odt,.ods,.odp,.rtf,.txt,.csv" required>
-    <button>Convert Office</button>
-</form>
+<h1 style="text-align:center; padding: 10px;">DocTransformer Demo</h1>
 
-<h2>Conversion: AutoCAD to PDF</h2>
-<form action="/convert/cad-to-pdf" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" accept=".dwg,.dxf" required>
-    <button>Convert AutoCAD</button>
-</form>
-<p>After submitting, the processed PDF will auto-download.</p>
+<div class="tabs">
+    <div class="tab active" data-target="split">Split</div>
+    <div class="tab" data-target="merge">Merge</div>
+    <div class="tab" data-target="reorder">Reorder</div>
+    <div class="tab" data-target="rotate">Rotate</div>
+    <div class="tab" data-target="remove">Remove</div>
+    <div class="tab" data-target="add">Add</div>
+    <div class="tab" data-target="image2pdf">Image &rarr; PDF</div>
+    <div class="tab" data-target="office2pdf">Office &rarr; PDF</div>
+    <div class="tab" data-target="cad2pdf">AutoCAD &rarr; PDF</div>
+</div>
+
+<div class="content">
+
+    <!-- SPLIT -->
+    <section id="split" class="active">
+        <h2>Split PDF</h2>
+        <form action="/split" method="post" enctype="multipart/form-data">
+            <label>PDF File:</label>
+            <input type="file" name="file" accept="application/pdf" required />
+            <label>Page Ranges (e.g. 1-3,5-5,7-9):</label>
+            <input type="text" name="ranges" required />
+            <button type="submit">Split</button>
+        </form>
+    </section>
+
+    <!-- MERGE -->
+    <section id="merge">
+        <h2>Merge PDFs</h2>
+        <form action="/merge" method="post" enctype="multipart/form-data">
+            <label>PDF File 1:</label>
+            <input type="file" name="file1" accept="application/pdf" required />
+            <label>PDF File 2:</label>
+            <input type="file" name="file2" accept="application/pdf" required />
+            <button type="submit">Merge</button>
+        </form>
+    </section>
+
+    <!-- REORDER -->
+    <section id="reorder">
+        <h2>Reorder PDF Pages</h2>
+        <form action="/reorder" method="post" enctype="multipart/form-data">
+            <label>PDF File:</label>
+            <input type="file" name="file" accept="application/pdf" required />
+            <label>New Order (comma separated, e.g. 3,1,2):</label>
+            <input type="text" name="order" required />
+            <button type="submit">Reorder</button>
+        </form>
+    </section>
+
+    <!-- ROTATE -->
+    <section id="rotate">
+        <h2>Rotate PDF Pages</h2>
+        <form action="/rotate" method="post" enctype="multipart/form-data">
+            <label>PDF File:</label>
+            <input type="file" name="file" accept="application/pdf" required />
+            <label>Pages to Rotate (comma separated, e.g. 1,2,5):</label>
+            <input type="text" name="pages" required />
+            <label>Degrees (90, 180, or 270):</label>
+            <input type="number" name="degrees" min="90" max="270" step="90" required value="90" />
+            <button type="submit">Rotate</button>
+        </form>
+    </section>
+
+    <!-- REMOVE -->
+    <section id="remove">
+        <h2>Remove Pages from PDF</h2>
+        <form action="/remove" method="post" enctype="multipart/form-data">
+            <label>PDF File:</label>
+            <input type="file" name="file" accept="application/pdf" required />
+            <label>Pages to Remove (comma separated, e.g. 2,4):</label>
+            <input type="text" name="pages" required />
+            <button type="submit">Remove</button>
+        </form>
+    </section>
+
+    <!-- ADD -->
+    <section id="add">
+        <h2>Add Pages to PDF</h2>
+        <form action="/add" method="post" enctype="multipart/form-data">
+            <label>Base PDF (optional):</label>
+            <input type="file" name="baseFile" accept="application/pdf" />
+            <label>Number of Blank Pages at Beginning:
+                <input type="number" name="start" min="0" value="0" />
+            </label>
+            <label>Number of Blank Pages at End:
+                <input type="number" name="end" min="0" value="0" />
+            </label>
+            <label>Append PDF(s):</label>
+            <input type="file" name="append" accept="application/pdf" multiple />
+            <button type="submit">Add</button>
+        </form>
+    </section>
+
+    <!-- IMAGE TO PDF -->
+    <section id="image2pdf">
+        <h2>Convert Image to PDF</h2>
+        <form action="/convert/image-to-pdf" method="post" enctype="multipart/form-data">
+            <label>Image File (any image format):</label>
+            <input type="file" name="file" accept="image/*" required />
+            <button type="submit">Convert</button>
+        </form>
+    </section>
+
+    <!-- OFFICE TO PDF -->
+    <section id="office2pdf">
+        <h2>Convert Office Document to PDF</h2>
+        <form action="/convert/office-to-pdf" method="post" enctype="multipart/form-data">
+            <label>Office File (doc, xls, ppt, odt, ...):</label>
+            <input type="file" name="file" accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.odt,.ods,.odp,.rtf,.txt,.csv" required />
+            <button type="submit">Convert</button>
+        </form>
+    </section>
+
+    <!-- CAD TO PDF -->
+    <section id="cad2pdf">
+        <h2>Convert AutoCAD to PDF</h2>
+        <form action="/convert/cad-to-pdf" method="post" enctype="multipart/form-data">
+            <label>AutoCAD File (dwg, dxf):</label>
+            <input type="file" name="file" accept=".dwg,.dxf" required />
+            <button type="submit">Convert</button>
+        </form>
+    </section>
+
+</div>
+
+<script>
+    const tabs = document.querySelectorAll('.tab');
+    const sections = document.querySelectorAll('section');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.dataset.target;
+
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            sections.forEach(s => {
+                s.id === target ? s.classList.add('active') : s.classList.remove('active');
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
